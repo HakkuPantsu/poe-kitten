@@ -251,20 +251,6 @@
     --flare-strength: 1.9;
   }
 
-  /* Mockup-only: lets the demo toolbar drive every surface at once. */
-  [data-flare="off"] .pk-surface-flare {
-    --flare-strength: 0;
-  }
-  [data-flare="subtle"] .pk-surface-flare {
-    --flare-strength: 0.45;
-  }
-  [data-flare="default"] .pk-surface-flare {
-    --flare-strength: 1;
-  }
-  [data-flare="bold"] .pk-surface-flare {
-    --flare-strength: 1.9;
-  }
-
   /* ------------------------------------------------------------------
      Easter egg: DVD bounce chip.
 
