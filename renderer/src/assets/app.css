@@ -1,0 +1,290 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   POE Kitten — beta design system
+   shadcn/ui v4 language: near-black canvas, 1px hairlines, monochrome,
+   tight radii, no gradients, restrained motion.
+   ------------------------------------------------------------------ */
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --radius: 0.5rem;
+
+  /* surfaces */
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --card: #0f0f0f;
+  --card-foreground: #fafafa;
+  --popover: #0f0f0f;
+  --popover-foreground: #fafafa;
+
+  /* neutrals */
+  --primary: #fafafa;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #fafafa;
+  --muted: #171717;
+  --muted-foreground: #8a8a8a;
+  --accent: #1f1f1f;
+  --accent-foreground: #fafafa;
+
+  --destructive: #7f1d1d;
+  --destructive-foreground: #fafafa;
+
+  /* hairlines — the defining detail of this kit */
+  --border: #262626;
+  --input: #262626;
+  --ring: #525252;
+
+  /* charts stay monochrome, like the reference */
+  --chart-1: #e5e5e5;
+  --chart-2: #a3a3a3;
+  --chart-3: #737373;
+  --chart-4: #525252;
+  --chart-5: #404040;
+
+  --sidebar: #0a0a0a;
+  --sidebar-foreground: #fafafa;
+  --sidebar-primary: #fafafa;
+  --sidebar-primary-foreground: #0a0a0a;
+  --sidebar-accent: #1a1a1a;
+  --sidebar-accent-foreground: #fafafa;
+  --sidebar-border: #262626;
+  --sidebar-ring: #525252;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  /* Tailwind v4 dropped `cursor: pointer` on buttons; shadcn recommends
+     opting back in for desktop apps. */
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  /* ---- window chrome ----
+     html/body MUST stay fully transparent: this renderer fills a transparent
+     Electron window that floats over the game. Painting an opaque background
+     here would black out the game behind the overlay.
+     "Backdrop" therefore means *surfaces* (sidebar, cards, header), not the window. */
+  html,
+  body {
+    height: 100%;
+    background: transparent;
+  }
+
+  body {
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+    user-select: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a3a3a;
+    background-clip: content-box;
+  }
+
+  /* animations used by the new UI — deliberately subtle */
+  @keyframes pk-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes pk-scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes pk-shimmer {
+    to {
+      background-position: 200% 50%;
+    }
+  }
+}
+
+@utility animate-fade-up {
+  animation: pk-fade-up 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@utility animate-scale-in {
+  animation: pk-scale-in 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* ------------------------------------------------------------------
+   Surface flare
+
+   This is NOT a window backdrop. The Electron window stays transparent so the
+   game shows through; the flare is applied to *surfaces* — the sidebar, cards,
+   panels — as a subtle inner sheen.
+
+   Usage: add `pk-surface-flare` to any element that already has a background.
+   Depth is controlled by --flare-strength.
+   ------------------------------------------------------------------ */
+
+@layer components {
+  .pk-surface-flare {
+    --flare-strength: 1;
+    position: relative;
+    isolation: isolate;
+    /* sit above the animated window backdrop (constellation, z-0) */
+    z-index: 1;
+  }
+
+  /* two offset radial washes + a whisper of top light */
+  .pk-surface-flare::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        70% 120% at 0% 0%,
+        rgba(168, 85, 247, 0.13) 0%,
+        transparent 60%
+      ),
+      radial-gradient(
+        60% 110% at 100% 100%,
+        rgba(255, 95, 176, 0.09) 0%,
+        transparent 62%
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.028) 0%,
+        transparent 42%
+      );
+    opacity: calc(var(--flare-strength) * 1);
+  }
+
+  /* hairline highlight along the top edge — the "lit" look */
+  .pk-surface-flare::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+    opacity: calc(var(--flare-strength) * 1);
+  }
+
+  .pk-surface-flare[data-strength="off"] {
+    --flare-strength: 0;
+  }
+  .pk-surface-flare[data-strength="subtle"] {
+    --flare-strength: 0.45;
+  }
+  .pk-surface-flare[data-strength="bold"] {
+    --flare-strength: 1.9;
+  }
+
+  /* Mockup-only: lets the demo toolbar drive every surface at once. */
+  [data-flare="off"] .pk-surface-flare {
+    --flare-strength: 0;
+  }
+  [data-flare="subtle"] .pk-surface-flare {
+    --flare-strength: 0.45;
+  }
+  [data-flare="default"] .pk-surface-flare {
+    --flare-strength: 1;
+  }
+  [data-flare="bold"] .pk-surface-flare {
+    --flare-strength: 1.9;
+  }
+
+  /* ------------------------------------------------------------------
+     Easter egg: DVD bounce chip.
+
+     Hue is driven by --egg-hue and changes on every wall hit, mimicking the
+     original DVD screensaver. `will-change: transform` keeps the bounce on
+     the compositor so it can't stutter the UI.
+     ------------------------------------------------------------------ */
+  .pk-dvd-egg {
+    --egg-hue: 280;
+    will-change: transform;
+    color: hsl(var(--egg-hue) 80% 82%);
+    border-color: hsl(var(--egg-hue) 70% 55% / 0.6);
+    background: hsl(var(--egg-hue) 60% 18% / 0.85);
+    box-shadow: 0 0 18px hsl(var(--egg-hue) 80% 55% / 0.28);
+    backdrop-filter: blur(4px);
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease,
+      background 0.3s ease,
+      box-shadow 0.3s ease;
+  }
+}
+

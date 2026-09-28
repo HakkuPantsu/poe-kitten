@@ -1,0 +1,64 @@
+---
+title: Download
+---
+
+<script setup>
+import { useData } from 'vitepress'
+
+const { theme } = useData()
+</script>
+
+You can download POE Kitten here. Any other mirrors are not known
+to the developer, downloading from them may be unsafe or malicious.
+
+| Download link                                                                                                                                      | Automatic updates | Startup time |
+| -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ------------ |
+| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/POE-Kitten-Setup-${theme.appVersion}.exe`">Windows 10+ (installer)</a> | ✔                 | Fast         |
+| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/POE-Kitten-${theme.appVersion}.exe`">Windows 10+ (portable)</a>        | ❌                 | Slower       |
+| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/POE-Kitten-${theme.appVersion}.AppImage`">Linux (AppImage)</a>         | ✔                 | n/a          |
+| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/POE-Kitten-${theme.appVersion}-universal.dmg`">macOS (dmg)</a>         | ❌                 | n/a          |
+
+Latest version is <code>{{ theme.appVersion }}</code>
+
+*The app is unsigned, which means you'll have to bypass security
+warnings on Windows and [macOS](https://support.apple.com/en-us/HT202491#openanyway) to open it.{:.text-sm}
+
+**Updating:** POE Kitten checks GitHub releases on startup and every 16 hours, and
+prompts you in-app when a new version is available. The portable `.exe` and the
+macOS `.dmg` don't support automatic updates — download those again by hand.
+
+
+---
+
+### Requirements
+
+- PoE display mode
+  - ✔ Windowed Fullscreen, Windowed
+  - ❌ Fullscreen
+- PoE language
+  - ✔ English, Russian, Portuguese, French, German, Spanish, Korean, Traditional Chinese, Japanese
+  - ❌ Thai
+
+No Administrator rights required, but\
+⚠ **If you run PoE client as Admin, OS security boundaries take effect.
+In order for POE Kitten to have access to the PoE window, it must be started with Administrator rights.**
+
+❌ **Not compatible with "GeForce Now" or any other cloud gaming service that do not forward clipboard data.**
+
+---
+
+### Moving from POE1/Awakened PoE Trade
+
+**IMPORTANT:** If you are following this, all steps are required. Most problems occur with not doing step 7.
+
+1. Download latest release from above
+2. Run installer
+3. Run POE Kitten
+4. Launch PoE2 to generate correct files
+5. Quit PoE2 and POE Kitten after seeing the banner popup that POE Kitten loaded
+6. Copy `apt-data` from `%APPDATA%\awakened-poe-trade` to `%APPDATA%\poe-kitten` to copy your previous settings
+  - Resulting directory structure should look like this:
+  - `%APPDATA%\poe-kitten\apt-data\`
+    - `config.json`
+7. **IMPORTANT:** Edit `config.json` and change the value of "windowTitle": "Path of Exile" to instead be "Path of Exile 2", otherwise it will open only for poe1
+8. Start POE Kitten and PoE2

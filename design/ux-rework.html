@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Exiled Kitty 2 — UX Rework</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Baloo+2:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --font: "Fredoka", "Baloo 2", "Comic Sans MS", "Segoe UI", sans-serif;
+        --disp: "Baloo 2", "Fredoka", "Comic Sans MS", cursive;
+        --mono: "Cascadia Code", ui-monospace, monospace;
+
+        --page: radial-gradient(1200px 700px at 85% -10%, rgba(199,125,255,.16), transparent 60%),
+          radial-gradient(1000px 600px at -5% 110%, rgba(255,95,176,.12), transparent 60%),
+          linear-gradient(160deg, #221830, #171122 55%, #241a2e);
+        --bg: #241a2e; --border: #7a3fb0; --border-soft: #4a2f6a;
+        --text: #f2e6ff; --soft: #c9a8e8; --muted: #9a7fc4; --muted2: #6f5a94;
+        --accent: #ff5fb0; --accent2: #c77dff; --accent3: #ffd166; --green: #59d97a;
+        --glow: rgba(199,125,255,.6); --glowp: rgba(255,95,176,.55);
+        --panel: #2e2140; --panel2: #271a36; --input: #1d1430;
+        --row-line: #3a2a52; --row-hover: #33244a; --row-alt: #291c3a; --best: #3a2450;
+        --grad: linear-gradient(135deg, #a855f7, #ff5fb0);
+        --holo: linear-gradient(120deg, #3a2450, #4a2a68 35%, #5a2a58 65%, #3a2450);
+        --unique: #e0a94a;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { font-family: var(--font); color: var(--text); background: var(--page); background-attachment: fixed; padding: 30px 24px 90px; -webkit-font-smoothing: antialiased; }
+      .head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+      .head h1 { font-family: var(--disp); font-size: 26px; font-weight: 800; color: #e0a8ff; text-shadow: 0 0 18px var(--glow); }
+      .head .kit { font-size: 26px; animation: wobble 3s ease-in-out infinite; display: inline-block; }
+      @keyframes wobble { 0%,100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg) scale(1.08); } }
+      .sub { color: var(--muted); font-size: 13.5px; margin-bottom: 22px; }
+
+      /* flow strip */
+      .flow { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 30px; }
+      .step { display: flex; align-items: center; gap: 9px; background: var(--panel); border: 2px solid var(--border-soft); border-radius: 999px; padding: 8px 14px; }
+      .step .n { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 800; color: #fff; background: var(--grad); }
+      .step span { font-size: 12.5px; font-weight: 600; color: var(--soft); }
+      .step .arrow { color: var(--muted2); }
+
+      section { margin-bottom: 40px; }
+      .cap { display: flex; align-items: center; gap: 9px; font-size: 13.5px; font-weight: 700; color: #d9c0f5; margin-bottom: 12px; }
+      .cap .tag { font-size: 10px; font-weight: 800; letter-spacing: .5px; padding: 2px 8px; border-radius: 999px; background: var(--grad); color: #fff; }
+      .cap small { color: var(--muted); font-weight: 500; }
+
+      .surface { border: 2px solid var(--border); border-radius: 20px; background: var(--bg); box-shadow: 0 24px 60px -26px #000, 0 0 30px -14px var(--glow); overflow: hidden; }
+
+      .btn { height: 38px; padding: 0 16px; border-radius: 999px; border: 2px solid var(--border-soft); background: var(--panel); color: var(--text); font: inherit; font-weight: 700; font-size: 13px; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+      .btn.primary { background: var(--grad); border-color: transparent; color: #fff; box-shadow: 0 8px 20px -6px var(--glowp); }
+      .btn.ghost { background: transparent; }
+      .kbd { background: var(--panel); border: 2px solid var(--border-soft); border-bottom-width: 4px; border-radius: 8px; padding: 2px 9px; font-weight: 700; font-size: 12px; color: var(--soft); white-space: nowrap; }
+
+      /* ---------- 1. onboarding ---------- */
+      .onboard { max-width: 620px; margin: 0 auto; padding: 34px 34px 28px; text-align: center; position: relative; }
+      .onboard .bow { font-size: 40px; animation: wobble 3.4s ease-in-out infinite; display: inline-block; }
+      .onboard h2 { font-family: var(--disp); font-size: 26px; color: #fff; margin: 6px 0 8px; }
+      .onboard p.lead { color: var(--soft); font-size: 14px; margin-bottom: 24px; }
+      .trio { display: flex; gap: 14px; margin-bottom: 26px; text-align: left; }
+      .trio .t { flex: 1; background: var(--panel2); border: 2px solid var(--border-soft); border-radius: 16px; padding: 15px; }
+      .trio .t .ic { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; font-size: 19px; background: var(--grad); margin-bottom: 10px; }
+      .trio .t b { display: block; font-size: 14px; margin-bottom: 3px; }
+      .trio .t span { color: var(--muted); font-size: 12px; }
+      .detected { display: inline-flex; align-items: center; gap: 8px; background: rgba(89,217,122,.1); border: 2px solid rgba(89,217,122,.35); color: var(--green); border-radius: 999px; padding: 6px 14px; font-size: 12.5px; font-weight: 700; margin-bottom: 20px; }
+      .onboard .row { display: flex; gap: 10px; justify-content: center; }
+
+      /* ---------- 2. launcher ---------- */
+      .launcher { max-width: 640px; margin: 0 auto; border-radius: 22px; }
+      .lsearch { display: flex; align-items: center; gap: 12px; padding: 16px 20px; border-bottom: 2px dashed var(--border); }
+      .lsearch .ic { font-size: 20px; }
+      .lsearch input { flex: 1; background: transparent; border: 0; outline: 0; color: var(--text); font: inherit; font-size: 17px; font-weight: 500; }
+      .lbody { padding: 10px; max-height: 460px; overflow: auto; }
+      .lgroup { font-size: 10.5px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted2); padding: 8px 12px 4px; }
+      .litem { display: flex; align-items: center; gap: 13px; padding: 11px 13px; border-radius: 14px; border: 2px solid transparent; cursor: pointer; }
+      .litem:hover { background: var(--row-hover); }
+      .litem.sel { background: linear-gradient(90deg, rgba(199,125,255,.16), rgba(255,95,176,.08)); border-color: rgba(199,125,255,.4); }
+      .litem .ic { width: 40px; height: 40px; flex: none; border-radius: 12px; display: grid; place-items: center; font-size: 19px; background: var(--panel); border: 2px solid var(--border-soft); }
+      .litem.sel .ic { background: var(--grad); border-color: transparent; }
+      .litem .txt { flex: 1; min-width: 0; }
+      .litem .txt b { display: block; font-size: 14.5px; }
+      .litem .txt span { color: var(--muted); font-size: 12px; }
+      .litem .go { color: var(--muted2); font-size: 12px; font-weight: 700; }
+      .lfoot { display: flex; align-items: center; gap: 14px; padding: 11px 18px; border-top: 2px dashed var(--border); color: var(--muted2); font-size: 11.5px; }
+      .lfoot .k { color: var(--soft); }
+
+      /* ---------- 3. price card ---------- */
+      .pc { max-width: 480px; margin: 0 auto; }
+      .pc .top { display: flex; gap: 13px; padding: 16px; align-items: flex-start; }
+      .pc .icon { width: 64px; height: 64px; flex: none; border-radius: 16px; display: grid; place-items: center; padding: 6px; background: var(--panel); border: 2px solid var(--border-soft); position: relative; animation: bob 3.4s ease-in-out infinite; }
+      @keyframes bob { 50% { transform: translateY(-3px); } }
+      .pc .icon img { width: 100%; height: 100%; object-fit: contain; display: block; filter: drop-shadow(0 3px 6px rgba(0,0,0,.5)); }
+      .pc .icon::after { content: "♡"; position: absolute; top: -9px; right: -9px; font-size: 14px; color: var(--accent); animation: beat 2s ease-in-out infinite; }
+      @keyframes beat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.25); } }
+      .pc .name { font-family: var(--disp); font-size: 19px; font-weight: 800; color: var(--unique); }
+      .pc .base { color: var(--muted); font-size: 12.5px; }
+      .pc .chips { display: flex; gap: 6px; margin-top: 7px; flex-wrap: wrap; }
+      .chip { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--panel); border: 2px solid var(--border-soft); color: var(--muted); }
+      .chip.on { background: var(--grad); border-color: transparent; color: #fff; }
+      .headline { margin: 0 16px 12px; border-radius: 18px; border: 2px solid var(--border-soft); background: var(--holo); background-size: 200% 200%; padding: 16px; display: flex; align-items: center; gap: 16px; animation: holo 6s ease infinite, breath 3.2s ease-in-out infinite; position: relative; overflow: hidden; }
+      @keyframes holo { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+      @keyframes breath { 0%,100% { box-shadow: 0 0 0 0 transparent; } 50% { box-shadow: 0 0 30px -4px var(--glow); } }
+      .headline .big { font-family: var(--disp); font-size: 38px; font-weight: 800; color: #fff; text-shadow: 0 2px 0 var(--accent2), 0 0 18px var(--glow); line-height: 1; }
+      .headline .unit { font-size: 15px; font-weight: 700; color: var(--soft); }
+      .headline .cap2 { color: var(--soft); font-size: 12px; margin-top: 6px; }
+      .headline .right { margin-left: auto; text-align: right; }
+      .trend { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; color: var(--green); }
+      .spark { display: flex; align-items: flex-end; gap: 3px; height: 26px; margin-top: 6px; }
+      .spark i { width: 5px; border-radius: 2px; background: var(--accent2); opacity: .8; }
+      .actions { display: flex; gap: 8px; padding: 0 16px 12px; flex-wrap: wrap; }
+      .list-toggle { display: flex; align-items: center; gap: 8px; padding: 0 16px 8px; color: var(--muted); font-size: 12px; font-weight: 700; }
+      .lst { border-top: 2px dashed var(--border); background: var(--panel2); }
+      .lhead, .lrow { display: grid; grid-template-columns: 16px 108px 1fr 56px 54px; gap: 10px; padding: 9px 16px; align-items: center; }
+      .lhead { font-size: 10px; text-transform: uppercase; letter-spacing: .8px; color: var(--muted2); font-weight: 800; }
+      .lrow { border-bottom: 1px solid var(--row-line); }
+      .lrow.best { position: relative; background: linear-gradient(90deg, rgba(199,125,255,.16), var(--best) 45%); }
+      .lrow.best::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--grad); }
+      .lrow .p { font-weight: 700; font-family: var(--disp); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+      .lrow.best .p { color: var(--accent); }
+      .mark { color: var(--accent3); text-align: center; font-size: 12px; }
+      .seller { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .orb { width: 14px; height: 14px; border-radius: 50%; flex: none; background: radial-gradient(circle at 35% 30%, #fff6d8, #d9a441 55%, #7a5216); }
+      .whisper { flex: none; font-size: 10px; font-weight: 800; color: var(--accent2); border: 2px solid var(--border-soft); border-radius: 999px; padding: 2px 9px; }
+      .pcfoot { display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: var(--muted2); font-size: 11px; font-weight: 600; }
+      .pcfoot .k { background: var(--panel); border: 2px solid var(--border-soft); border-radius: 6px; padding: 1px 7px; color: var(--soft); font-weight: 700; }
+
+      /* ---------- 4. tools manager ---------- */
+      .tools { padding: 18px; }
+      .tools .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+      .tool { background: var(--panel2); border: 2px solid var(--border-soft); border-radius: 16px; padding: 14px; display: flex; gap: 12px; align-items: flex-start; }
+      .tool .ic { width: 40px; height: 40px; flex: none; border-radius: 12px; display: grid; place-items: center; font-size: 19px; background: var(--panel); border: 2px solid var(--border-soft); }
+      .tool .txt { flex: 1; min-width: 0; }
+      .tool .txt b { display: block; font-size: 14px; }
+      .tool .txt span { color: var(--muted); font-size: 11.5px; display: block; margin-top: 2px; }
+      .tool .txt .hk { margin-top: 7px; }
+      .sw { width: 46px; height: 26px; border-radius: 999px; background: var(--input); border: 2px solid var(--border-soft); position: relative; flex: none; }
+      .sw i { position: absolute; top: 1px; left: 1px; width: 18px; height: 18px; border-radius: 50%; background: var(--muted); }
+      .sw.on { background: var(--grad); border-color: transparent; }
+      .sw.on i { left: 23px; background: #fff; }
+
+      /* ---------- 5. settings/theme ---------- */
+      .set { display: flex; min-height: 320px; }
+      .set .side { width: 190px; flex: none; border-right: 2px dashed var(--border); padding: 12px 9px; display: flex; flex-direction: column; gap: 3px; }
+      .si { text-align: left; font: inherit; font-size: 13px; font-weight: 600; color: var(--muted); background: transparent; border: 2px solid transparent; border-radius: 12px; padding: 9px 12px; cursor: pointer; }
+      .si.active { color: #fff; background: var(--grad); }
+      .set .content { flex: 1; padding: 18px 20px; }
+      .set h3 { font-family: var(--disp); font-size: 17px; margin-bottom: 4px; }
+      .set .hint { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
+      .themes2 { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+      .th { border: 2px solid var(--border-soft); border-radius: 14px; padding: 12px; cursor: pointer; }
+      .th.sel { border-color: var(--accent); box-shadow: 0 0 18px -6px var(--glowp); }
+      .th .swatch { height: 30px; border-radius: 10px; margin-bottom: 8px; }
+      .th b { font-size: 12.5px; }
+      .th span { display: block; color: var(--muted); font-size: 10.5px; }
+    </style>
+  </head>
+  <body>
+    <div class="head"><span class="kit">🖤</span><h1>Exiled Kitty 2 — new user flow</h1></div>
+    <div class="sub">Beginner-first redesign. Every screen answers “what do I do next?”</div>
+
+    <div class="flow">
+      <div class="step"><span class="n">1</span><span>Onboard</span></div><span class="arrow">→</span>
+      <div class="step"><span class="n">2</span><span>Launcher (one key)</span></div><span class="arrow">→</span>
+      <div class="step"><span class="n">3</span><span>Price card</span></div><span class="arrow">→</span>
+      <div class="step"><span class="n">4</span><span>Tools manager</span></div><span class="arrow">→</span>
+      <div class="step"><span class="n">5</span><span>Settings &amp; theme</span></div>
+    </div>
+
+    <!-- 1 onboarding -->
+    <section>
+      <div class="cap"><span class="tag">01</span> First run <small>— replaces “here's a bar of cryptic buttons”</small></div>
+      <div class="surface onboard">
+        <div class="bow">🎀</div>
+        <h2>Price check your first item in 10 seconds.</h2>
+        <p class="lead">No setup needed — we found your game already.</p>
+        <div class="detected">✓ Detected: Path of Exile 2</div>
+        <div class="trio">
+          <div class="t"><div class="ic">🖱️</div><b>1. Hover an item</b><span>In your inventory, stash, or on the ground.</span></div>
+          <div class="t"><div class="ic">⌨️</div><b>2. Press the key</b><span><span class="kbd">Ctrl</span> + <span class="kbd">F6</span> — that's the only key you need.</span></div>
+          <div class="t"><div class="ic">💰</div><b>3. See the price</b><span>Instantly, with the cheapest listing ready to whisper.</span></div>
+        </div>
+        <div class="row">
+          <button class="btn primary">✨ Got it — let's go</button>
+          <button class="btn">Change hotkey</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 launcher -->
+    <section>
+      <div class="cap"><span class="tag">02</span> Launcher <small>— press <span class="kbd">Shift</span> + <span class="kbd">Space</span>; replaces the button bar</small></div>
+      <div class="surface launcher">
+        <div class="lsearch"><span class="ic">🔍</span><input value="" placeholder="What do you want to do?" /></div>
+        <div class="lbody">
+          <div class="lgroup">Most used</div>
+          <div class="litem sel">
+            <div class="ic">💰</div>
+            <div class="txt"><b>Price check hovered item</b><span>Hover an item in-game, then run this — checks its market value.</span></div>
+            <div class="go"><span class="kbd">Ctrl</span> + <span class="kbd">F6</span></div>
+          </div>
+          <div class="lgroup">Tools</div>
+          <div class="litem"><div class="ic">🗺️</div><div class="txt"><b>Check a map / waystone</b><span>See how much it's worth and whether it's dangerous.</span></div><div class="go">Not set</div></div>
+          <div class="litem"><div class="ic">🔎</div><div class="txt"><b>Find an item by name</b><span>Type a name to look up any item's price.</span></div><div class="go">Not set</div></div>
+          <div class="litem"><div class="ic">📦</div><div class="txt"><b>Search my stash</b><span>Highlight matching items in your stash tabs.</span></div><div class="go">Not set</div></div>
+          <div class="litem"><div class="ic">⏱️</div><div class="txt"><b>Run timer</b><span>Time your maps and farming runs.</span></div><div class="go">Not set</div></div>
+          <div class="litem"><div class="ic">📈</div><div class="txt"><b>XP &amp; leveling</b><span>Track XP/h and how long to your next level.</span></div><div class="go">On</div></div>
+          <div class="lgroup">App</div>
+          <div class="litem"><div class="ic">🧰</div><div class="txt"><b>Manage tools</b><span>Turn tools on or off and pin them to the overlay.</span></div><div class="go"></div></div>
+          <div class="litem"><div class="ic">⚙️</div><div class="txt"><b>Settings</b><span>Hotkeys, appearance, account and updates.</span></div><div class="go"></div></div>
+          <div class="litem"><div class="ic">❔</div><div class="txt"><b>Help &amp; tips</b><span>30-second guide and useful shortcuts.</span></div><div class="go"></div></div>
+        </div>
+        <div class="lfoot"><span class="k">↑↓</span> navigate <span class="k">Enter</span> run <span class="k">Esc</span> close <span style="flex:1"></span> <span>Tip: start typing “price”</span></div>
+      </div>
+    </section>
+
+    <!-- 3 price card -->
+    <section>
+      <div class="cap"><span class="tag">03</span> Price check <small>— the answer first, details second</small></div>
+      <div class="surface pc">
+        <div class="top">
+          <div class="icon"><img src="https://web.poecdn.com/gen/image/WzksMTQseyJmIjoiMkRJdGVtcy9GbGFza3MvVW5pcXVlcy9NZWx0aW5nTWFlbHN0cm9tIiwidyI6MSwiaCI6Miwic2NhbGUiOjEsInJlYWxtIjoicG9lMiIsImxldmVsIjoxfV0/3ffec91606/MeltingMaelstrom.png" alt="" /></div>
+          <div>
+            <div class="name">Melting Maelstrom</div>
+            <div class="base">Ultimate Mana Flask · iLvl 82</div>
+            <div class="chips"><span class="chip on">Unique ♡</span><span class="chip">Quality +20%</span><span class="chip">Corrupted</span></div>
+          </div>
+        </div>
+
+        <div class="headline">
+          <div>
+            <div><span class="big">≈ 3.2</span> <span class="unit">Divine Orb</span></div>
+            <div class="cap2">Cheapest <b>2.9 div</b> · 24 listings · updated just now</div>
+          </div>
+          <div class="right">
+            <div class="trend">▼ 4.1% vs 7d</div>
+            <div class="spark"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:70%"></i><i style="height:62%"></i><i style="height:80%"></i><i style="height:90%"></i></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary">💬 Whisper cheapest</button>
+          <button class="btn">📋 Copy price</button>
+          <button class="btn ghost">↗ Open trade</button>
+        </div>
+
+        <div class="list-toggle">▾ All 24 listings</div>
+        <div class="lst">
+          <div class="lhead"><span></span><span>Price</span><span>Seller</span><span>Stock</span><span style="text-align:right">Listed</span></div>
+          <div class="lrow best"><div class="mark">★</div><div class="p"><span class="orb"></span>2.9 div</div><div class="seller">Exile_Vaal <span class="whisper">🔔 Whisper</span></div><div class="seller">1</div><div style="text-align:right;color:var(--muted)">6m</div></div>
+          <div class="lrow"><div class="mark"></div><div class="p"><span class="orb"></span>3.1 div</div><div class="seller">ChaosGambler <span class="whisper">🔔 Whisper</span></div><div class="seller">2</div><div style="text-align:right;color:var(--muted)">22m</div></div>
+          <div class="lrow"><div class="mark"></div><div class="p"><span class="orb"></span>3.4 div</div><div class="seller">DelveDiver <span class="whisper">🔔 Whisper</span></div><div class="seller">5</div><div style="text-align:right;color:var(--muted)">2h</div></div>
+        </div>
+        <div class="pcfoot"><span class="k">Ctrl</span> + <span class="k">F6</span> re-check · <span class="k">Esc</span> close<span style="flex:1"></span>⚡ 0.8s</div>
+      </div>
+    </section>
+
+    <!-- 4 tools -->
+    <section>
+      <div class="cap"><span class="tag">04</span> Manage tools <small>— plain names, descriptions, on/off</small></div>
+      <div class="surface tools">
+        <div class="grid">
+          <div class="tool"><div class="ic">💰</div><div class="txt"><b>Price check</b><span>Check what a hovered item is worth.</span><div class="hk"><span class="kbd">Ctrl</span> + <span class="kbd">F6</span></div></div><div class="sw on"><i></i></div></div>
+          <div class="tool"><div class="ic">🗺️</div><div class="txt"><b>Map check</b><span>Value &amp; danger of a map/waystone.</span><div class="hk"><span class="kbd">Not set</span></div></div><div class="sw"><i></i></div></div>
+          <div class="tool"><div class="ic">🔎</div><div class="txt"><b>Item search</b><span>Find an item by typing its name.</span><div class="hk"><span class="kbd">Not set</span></div></div><div class="sw on"><i></i></div></div>
+          <div class="tool"><div class="ic">📦</div><div class="txt"><b>Stash search</b><span>Highlight items in your stash.</span><div class="hk"><span class="kbd">Not set</span></div></div><div class="sw"><i></i></div></div>
+          <div class="tool"><div class="ic">⏱️</div><div class="txt"><b>Run timer</b><span>Time your maps and runs.</span><div class="hk"><span class="kbd">Not set</span></div></div><div class="sw"><i></i></div></div>
+          <div class="tool"><div class="ic">📈</div><div class="txt"><b>XP tracker</b><span>XP/h and time to next level.</span><div class="hk"><span class="kbd">Not set</span></div></div><div class="sw on"><i></i></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5 settings -->
+    <section>
+      <div class="cap"><span class="tag">05</span> Settings <small>— searchable, grouped, plain language</small></div>
+      <div class="surface set">
+        <div class="side">
+          <button class="si">⌨️ Hotkeys</button>
+          <button class="si">🎨 Appearance</button>
+          <button class="si active">💰 Price check</button>
+          <button class="si">🗺️ Map check</button>
+          <button class="si">🖥️ Game &amp; account</button>
+          <button class="si">🔔 Notifications</button>
+          <button class="si">❔ Help</button>
+          <button class="si">⏻ Quit</button>
+        </div>
+        <div class="content">
+          <h3>Appearance 🎨</h3>
+          <div class="hint">Pick a theme. It applies everywhere instantly.</div>
+          <div class="themes2">
+            <div class="th sel"><div class="swatch" style="background:linear-gradient(135deg,#a855f7,#ff5fb0)"></div><b>Kuromi</b><span>Dark purple + pink</span></div>
+            <div class="th"><div class="swatch" style="background:linear-gradient(135deg,#ffa8dc,#ff5fb0)"></div><b>Classic Kitty</b><span>Pink &amp; white</span></div>
+            <div class="th"><div class="swatch" style="background:linear-gradient(135deg,#7ee8ff,#c07dff)"></div><b>Y2K Cyberspace</b><span>Chrome + cyan</span></div>
+            <div class="th"><div class="swatch" style="background:linear-gradient(135deg,#c9b8ff,#a8f0e0)"></div><b>Pastel Dream</b><span>Soft lavender</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
