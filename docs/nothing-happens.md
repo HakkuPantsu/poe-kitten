@@ -4,28 +4,33 @@ title: Nothing happens when I try to price check
 
 # Nothing happens when I try to price check
 
+![POE Kitten dashboard](/images/dashboard.png)
+
 To understand why nothing is happening, you need to open the logs.
 Most problems are easy to fix once you read them. But there is one that doesn't have a quick fix:
 ```
 warn [ClipboardPoller] No item text found.
 ```
 
-The diagram below shows what APT does when the hotkey is pressed.
+## Make sure the item is actually being copied
 
-![](https://i.imgur.com/gujMSBG.png)
+POE Kitten doesn't read the item from your screen — it asks the game to copy the
+hovered item to the clipboard, then parses that text. So if the clipboard copy
+doesn't happen, nothing happens at all.
 
-As you may have noticed, compared to other third-party PoE tools APT uses "Advanced Descriptions" key.
-![](https://i.imgur.com/fjLSIz9.png)
+The usual cause is a **global keyboard shortcut** from another program swallowing
+the key combo. Set your price check hotkey in **Settings → Hotkeys**:
 
-`Ctrl + Alt + C` is a frequent victim of global keyboard shortcuts. The sad part, if you are reading this, is that they used a dirty way to implement global shortcuts.
+![Hotkeys settings](/images/hotkeys.png)
 
-**Your goal is to make PoE copy the item to the clipboard when you press** `Ctrl + Highlight + C` (if it's already working, ignore this article, your problem is somewhere else).
+POE Kitten also presses the game's own **"Advanced Descriptions"** key as part of
+the copy, so that full modifier text is included. You can see and change it in
+**Settings → Price check**.
 
-<video controls loop>
-  <source src="https://i.imgur.com/3qXPd6G.mp4" type="video/mp4">
-</video>
+**Your goal is to make PoE copy the item to the clipboard when you press your hotkey.**
+If it already works, ignore this article — your problem is somewhere else.
 
-As a starting point, common programs reported by players were:
+Common programs reported by players as stealing the combo:
 
 - ASUS GPU Tweak II
 - Radeon™ Software
@@ -33,8 +38,17 @@ As a starting point, common programs reported by players were:
 - AHK scripts
 - Discord (clips)
 
-Just for reference, this is what you should expect to see in the logs.
-I'll remind once again that your goal is not to make it look exactly like on the screenshot,
-but to make sure that **PoE copies the item to the clipboard with all mods**.
+## Check the logs
 
-![](https://i.imgur.com/LmDhl1O.png)
+Turn on **Read client log** in **Settings → Chat & alerts**, which is also what
+powers whispers, deaths and level-ups:
+
+![Chat and alerts settings](/images/chat.png)
+
+Then open the logs and price check an item. This is what a working check looks like —
+you should see the item text being received, then the trade search running:
+
+![Logs panel](/images/logs.png)
+
+Your goal is not to make it look exactly like the screenshot, but to make sure that
+**PoE copies the item to the clipboard with all mods**.

@@ -42,5 +42,3 @@ See [DEVELOPING.md](./DEVELOPING.md)
 - [poe.ninja](https://poe.ninja/)
 
 Full list of upstream authors: [CREDITS.md](./CREDITS.md)
-
-![graph](https://i.imgur.com/MATqhv7.png)

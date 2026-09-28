@@ -13,15 +13,19 @@ to the developer, downloading from them may be unsafe or malicious.
 
 | Download link                                                                                                                                      | Automatic updates | Startup time |
 | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- | ------------ |
-| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/poe-kitten-Setup-${theme.appVersion}.exe`">Windows 10+ (installer)</a> | ✔                 | Fast         |
-| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/poe-kitten-${theme.appVersion}.exe`">Windows 10+ (portable)</a>        | ❌                 | Slower       |
-| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/poe-kitten-${theme.appVersion}.AppImage`">Linux (AppImage)</a>         | ✔                 | n/a          |
-| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/poe-kitten-${theme.appVersion}-universal.dmg`">macOS (dmg)</a>         | ❌                 | n/a          |
+| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/POE-Kitten-Setup-${theme.appVersion}.exe`">Windows 10+ (installer)</a> | ✔                 | Fast         |
+| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/POE-Kitten-${theme.appVersion}.exe`">Windows 10+ (portable)</a>        | ❌                 | Slower       |
+| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/POE-Kitten-${theme.appVersion}.AppImage`">Linux (AppImage)</a>         | ✔                 | n/a          |
+| <a :href="`${theme.github.releasesUrl}/download/v${theme.appVersion}/POE-Kitten-${theme.appVersion}-universal.dmg`">macOS (dmg)</a>         | ❌                 | n/a          |
 
-Latest version is <span class="bg-gray-100 border rounded px-1">{{ theme.appVersion }}</span>
+Latest version is <code>{{ theme.appVersion }}</code>
 
 *The app is unsigned, which means you'll have to bypass security
 warnings on Windows and [macOS](https://support.apple.com/en-us/HT202491#openanyway) to open it.{:.text-sm}
+
+**Updating:** POE Kitten checks GitHub releases on startup and every 16 hours, and
+prompts you in-app when a new version is available. The portable `.exe` and the
+macOS `.dmg` don't support automatic updates — download those again by hand.
 
 
 ---
@@ -34,10 +38,6 @@ warnings on Windows and [macOS](https://support.apple.com/en-us/HT202491#openany
 - PoE language
   - ✔ English, Russian, Portuguese, French, German, Spanish, Korean, Traditional Chinese, Japanese
   - ❌ Thai
-
-Translation status for each language:
-
-[![Translation status](https://translate.codeberg.org/widget/poe-kitten/poe-kitten/multi-auto.svg)](https://translate.codeberg.org/engage/poe-kitten/)
 
 No Administrator rights required, but\
 ⚠ **If you run PoE client as Admin, OS security boundaries take effect.

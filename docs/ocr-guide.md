@@ -2,17 +2,21 @@
 title: OCR Guide
 ---
 
-This guide will help you to setup and perform OCR using Awakened PoE Trade.
+This guide helps you set up and use OCR in POE Kitten.
 
-### OCR Setup ###
+### OCR Setup
 
-1. Download a 6MB archive with OCR files from [here](https://github.com/SnosMe/awakened-poe-trade/releases/download/v3.20.10007/cv-ocr.zip).
+1. Download the ~6MB OCR archive from
+   [here](https://github.com/SnosMe/awakened-poe-trade/releases/download/v3.20.10007/cv-ocr.zip).
 
-2. Open the folder with configuration file.
+2. Open your POE Kitten config folder:
+   `%APPDATA%\poe-kitten\apt-data\`
+
+   For reference, this is the equivalent folder location shown in the app:
    ![](/reference-images/toolbar-config.png)
 
-3. Extract "cv-ocr" folder, inside the archive, into it.\
-   You should have the following structure:
+3. Extract the `cv-ocr` folder from the archive into it.
+   You should end up with this structure:
 
    ```
    apt-data/
@@ -23,25 +27,25 @@ This guide will help you to setup and perform OCR using Awakened PoE Trade.
       └── tesseract-core-simd.wasm
    ```
 
-4. Restart the application.
+4. Restart POE Kitten.
 
-### Widget configuration ###
+### Widget configuration
 
-1. Open the widget by clicking near the Settings button.
-   ![](https://i.imgur.com/Y0RJune.png)
+1. Open the dashboard with `Shift` + `Space`, then pick the tool you want to
+   place. The launcher shows every available tool:
 
-   I prefer to place it at the bottom.
-   ![](https://i.imgur.com/bkNDKYg.png)
+   ![POE Kitten dashboard](/images/dashboard.png)
 
-2. Edit the widget and assign a hotkey.
-   ![](https://i.imgur.com/GeOMcal.png)
+   I prefer to place the widget at the bottom of the screen.
 
-### Rules to follow before pressing the hotkey ###
+2. Open **Settings → Hotkeys** and bind a key to the widget action.
+
+   ![Hotkeys settings](/images/hotkeys.png)
+
+### Rules to follow before pressing the hotkey
 
 1. Both icons should be fully visible.
-   ![](https://i.imgur.com/Mu6B6it.png)
 
-2. The text should not be occluded by health bar or other elements.
-   ![](https://i.imgur.com/cM2i3Rk.png)
+2. The text should not be occluded by the health bar or other UI elements.
 
 Happy hunting!
