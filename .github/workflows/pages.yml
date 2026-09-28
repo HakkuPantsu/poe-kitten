@@ -1,29 +1,26 @@
 name: Docs
 
-# Disabled: needs a GitHub Pages site configured for this repo
-# (Settings -> Pages -> Source: GitHub Actions). Re-adding the `push`
-# trigger will make this error on every docs change until that's done.
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - "docs/**"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
-# on:
-#   push:
-#     branches:
-#       - 'master'
-#     tags-ignore:
-#       - '**'
-#     paths:
-#       - 'docs/**'
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
@@ -37,5 +34,13 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./docs/.vitepress/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v5

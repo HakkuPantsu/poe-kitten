@@ -1,15 +1,15 @@
 import { defineConfig } from 'vitepress'
 
-const BASE = '/POE-Kitten/'
+// Must match the repo name: https://hakkupantsu.github.io/poe-kitten/
+const BASE = '/poe-kitten/'
 
 export default defineConfig({
   title: 'POE Kitten',
-  description: 'App for price-checking items in Path of Exile 2',
+  description: 'A modern all-in-one Path of Exile 2 overlay — Kuromi Mode themed',
   base: BASE,
   mpa: true,
   head: [
-    ['link', { rel: 'shortcut icon', type: 'image/png', href: `${BASE}favicon.png` }],
-    ['meta', { name: 'google-site-verification', content: 'R0xdvBEYFTxfn0RxHhquiA6tBgvshYv3ODk-oNSuq4g' }]
+    ['link', { rel: 'shortcut icon', type: 'image/png', href: `${BASE}favicon.png` }]
   ],
   markdown: {
     theme: 'light-plus',
