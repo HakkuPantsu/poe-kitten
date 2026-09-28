@@ -1,0 +1,52 @@
+appId: "dev.hakkupantsu.poe-kitten"
+productName: "POE Kitten"
+npmRebuild: false
+
+# Auto-update source. The packaged app writes this into resources/app-update.yml,
+# and electron-updater reads releases from here. Must match the git remote.
+publish:
+  - provider: "github"
+    owner: "HakkuPantsu"
+    repo: "poe-kitten"
+    releaseType: "release"
+
+files:
+  - "package.json"
+  - from: "dist"
+    to: "."
+    filter: ["main.js", "vision.js"]
+  - from: "../renderer/dist"
+    to: "."
+
+extraMetadata:
+  main: "main.js"
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  artifactName: "${productName}-Setup-${version}.${ext}"
+  shortcutName: "POE Kitten"
+  createDesktopShortcut: true
+
+win:
+  # Disabled so Windows builds work without admin/Developer Mode (extracting the
+  # signing toolkit needs symlink rights). CI re-enables it via
+  # `-c.win.signAndEditExecutable=true` so official releases get icon + metadata.
+  signAndEditExecutable: false
+  target:
+    - "nsis"
+    - "portable"
+  artifactName: "${productName}-${version}.${ext}"
+linux:
+  target:
+    - "AppImage"
+mac:
+  target:
+    - target: "dmg"
+      arch:
+        - "universal"
+  identity: null
+  x64ArchFiles: "*"
+appImage:
+  executableArgs:
+    - "--sandbox"
