@@ -23,12 +23,15 @@ describe("parseClipboard error handling", () => {
 
   it.each(badInputs)("returns Err (never throws) for %s", (_label, input) => {
     let result: ReturnType<typeof parseClipboard> | undefined;
-    // a throw here would be the bug: the UI expects a Result, not an exception
-    expect(() => {
-      result = parseClipboard(input);
-    }).not.toThrow();
+    // A throw here is the bug: the engine expects a Result, not an exception.
+    // Checked outside the callback so a throw fails the test rather than
+    // being swallowed by the assertion helper.
+    result = parseClipboard(input);
 
+    expect(result).toBeDefined();
     expect(result!.isErr()).toBe(true);
     expect(typeof result!.error).toBe("string");
+    // the error name should be a real parse error, not a stringified TypeError
+    expect(result!.error).toBe("item.parse_error");
   });
 });

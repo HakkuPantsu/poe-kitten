@@ -3,10 +3,12 @@ on:
     branches:
       - "master"
       - "dev"
+      - "beta"
   pull_request:
     branches:
       - master
       - dev
+      - beta
 
 jobs:
   lint-and-format:
@@ -24,5 +26,24 @@ jobs:
         working-directory: ./main
       - uses: pre-commit/action@v3.0.1
 
-  # NOTE: the `test` job was removed — the renderer has no `test` script, so
-  # `npm run test` fails. Re-add it once real tests exist.
+  typecheck-and-test:
+    name: Typecheck & Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./renderer
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: ./renderer/package-lock.json
+      - run: npm ci
+      - name: Typecheck
+        run: npm run check-types
+      - name: Unit tests
+        run: npm run test -- --run
+      - name: Production build
+        run: npx vite build
+

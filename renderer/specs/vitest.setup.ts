@@ -43,23 +43,32 @@ vi.mock("@/web/settings", async () => {
     AppConfig: vi.fn(() => mockConfig),
   };
 });
-// Mock client-string-loader
-export const setupClientStringLoaderMock = () => {
-  vi.mock("@/assets/client-string-loader", () => ({
-    loadClientStrings: vi.fn(async (lang) => {
-      const basePath = path.resolve(__dirname, "../public/data/");
+/* Mock client-string-loader.
+   Declared at module top level rather than inside a helper: `vi.mock` is
+   hoisted above imports, so nesting it only obscures the execution order and
+   Vitest warns that it will become an error. */
+vi.mock("@/assets/client-string-loader", async () => {
+  const fs = await import("fs");
+  const path = await import("path");
+  const url = await import("url");
+  return {
+    loadClientStrings: vi.fn(async (lang: string) => {
+      const basePath = path.resolve(
+        import.meta.dirname,
+        "../public/data/",
+      );
       const filePath = path.join(basePath, `${lang}/client_strings.js`);
-
       try {
-        return (await import(/* @vite-ignore */ `${filePath}`)).default;
+        return (await import(/* @vite-ignore */ `${url.pathToFileURL(filePath).href}`))
+          .default;
       } catch (error: unknown) {
         throw new Error(
           `Error loading client_strings.js for ${lang}: ${(error as Error).message}`,
         );
       }
     }),
-  }));
-};
+  };
+});
 
 // Mock fetch
 export const setupFetchMock = () => {
@@ -152,6 +161,5 @@ export const defaultConfigMock = (overrides: Record<string, unknown> = {}) => {
 // Consolidate setup
 export const setupTests = (configOverrides: Record<string, unknown> = {}) => {
   defaultConfigMock(configOverrides); // Pass overrides here
-  setupClientStringLoaderMock();
   setupFetchMock();
 };

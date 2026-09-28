@@ -191,7 +191,16 @@ export function parseClipboard(clipboard: string): Result<ParsedItem, string> {
     performance.mark("parse-start");
     let sections = itemTextToSections(clipboard);
 
+    /* Guard the shape before touching it: empty or near-empty clipboard text
+       leaves fewer sections than the parser indexes into, and reading
+       `sections[0][2]` blind used to throw a raw TypeError that callers had
+       to catch. Report it as a normal parse error instead. */
+    if (!sections.length || !Array.isArray(sections[0])) {
+      return err("item.parse_error");
+    }
+
     if (sections[0][2] === _$.CANNOT_USE_ITEM) {
+      if (sections.length < 2) return err("item.parse_error");
       sections[0].pop(); // remove CANNOT_USE_ITEM line
       sections[1].unshift(...sections[0]); // prepend item class & rarity into second section
       sections.shift(); // remove first section where CANNOT_USE_ITEM line was
@@ -224,7 +233,7 @@ export function parseClipboard(clipboard: string): Result<ParsedItem, string> {
     performance.mark("parse-end");
     return Object.freeze(parsed);
   } catch (e) {
-    console.log(e);
+    if (import.meta.env.DEV) console.log(e);
     return err("item.parse_error");
   }
 }
